@@ -9,13 +9,13 @@
 
 2. 安装库并运行脚本
    ```bash
-   git clone https://github.com/Gzgod/Grass-new && cd Grass-new
+   git clone https://github.com/0xAdamPuk/Grass-new && cd Grass-new
    python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt
-   python3 main.py
+   python3 main2.py
    ```
 
 ## ID获取
-- 如果您还没有注册，可以使用我的链接： ([点击注册](https://app.getgrass.io/register/?referralCode=W2P80MXsTm9LaC6)).
+- 如果您还没有注册，可以使用我的链接： ([点击注册](https://app.getgrass.io/register?referralCode=DzRrYsxB0uj0gIY)).
 - 如何获取您的用户ID？
   - 登录并打开 https://app.getgrass.io/dashboard
   - 在浏览器中打开开发人员工具 (F12) / 检查元素。
