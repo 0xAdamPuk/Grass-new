@@ -300,7 +300,10 @@ async def connect_to_wss(protocol_proxy, user_id):
             await asyncio.sleep(DELAY_INTERVAL)
             continue
 
-def remove_specific_proxy(uid_proxy_mapping, uid, proxy):
+# 创建一个全局的 asyncio.Lock 对象
+lock = asyncio.Lock()
+
+async def remove_specific_proxy(uid_proxy_mapping, uid, proxy):
     """
     Remove a specific proxy for the given uid in the uid_proxy_mapping dictionary.
     
@@ -309,15 +312,16 @@ def remove_specific_proxy(uid_proxy_mapping, uid, proxy):
     :param proxy: str, the proxy to be removed
     :return: None
     """
-    if uid in uid_proxy_mapping:
-        if proxy in uid_proxy_mapping[uid]:
-            # Remove the specific proxy from the list
-            uid_proxy_mapping[uid].remove(proxy)
-            print(f"Proxy {proxy} removed from uid: {uid}")
+    async with lock:
+        if uid in uid_proxy_mapping:
+            if proxy in uid_proxy_mapping[uid]:
+                # Remove the specific proxy from the list
+                uid_proxy_mapping[uid].remove(proxy)
+                print(f"Proxy {proxy} removed from uid: {uid}")
+            else:
+                print(f"Proxy {proxy} not found for uid: {uid}")
         else:
-            print(f"Proxy {proxy} not found for uid: {uid}")
-    else:
-        print(f"uid: {uid} not found in uid_proxy_mapping")
+            print(f"uid: {uid} not found in uid_proxy_mapping")
 
 async def main():
     retry_count = {}
