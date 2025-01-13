@@ -1,20 +1,34 @@
-import time
 import subprocess
+import psutil
+import time
 
 def run_script():
     while True:
-        try:
-            # 执行main2.py脚本
-            subprocess.run(["python3", "main2.py"], check=True)
-        except subprocess.CalledProcessError as e:
-            # 捕获异常并打印错误信息
-            print(f"Error occurred: {e}")
-            print("Restarting the script in 5 seconds...")
-            time.sleep(5)  # 等待 5 秒后重新执行脚本
-        else:
-            # 如果脚本正常退出，则跳出循环
-            print("Script executed successfully.")
-            break
+        # 启动 main2.py 并获取进程对象
+        process = subprocess.Popen(["python3", "main2.py"])
+        pid = process.pid
+        print(f"Started main2.py with PID: {pid}")
+
+        # 监控进程状态
+        while True:
+            try:
+                # 检查进程是否存在
+                p = psutil.Process(pid)
+                # p.status() 可以用来检查进程的状态
+                if p.status() == psutil.STATUS_ZOMBIE:
+                    raise psutil.NoSuchProcess(pid)
+            except psutil.NoSuchProcess:
+                # 如果进程不存在或状态为僵尸进程，则重新启动
+                print(f"Process {pid} terminated. Restarting in 5 seconds...")
+                time.sleep(5)
+                break
+            except Exception as e:
+                print(f"Error occurred while monitoring process {pid}: {e}")
+                time.sleep(5)
+                break
+
+            # 等待一段时间后继续检查
+            time.sleep(1)
 
 if __name__ == "__main__":
     run_script()
