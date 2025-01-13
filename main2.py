@@ -101,6 +101,7 @@ print()
 
 # 获取用户输入以处理代理失败
 def get_user_input():
+    return False # 强制为no
     user_input = ""
     while user_input not in ['yes', 'no']:
         user_input = input("遇到特定失败时是否要移除代理 (yes/no)? ").strip().lower()
