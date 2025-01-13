@@ -209,7 +209,7 @@ async def connect_to_wss(protocol_proxy, user_id):
                             logger.debug(f"UID: {truncate_userid(user_id)} | {node_type} | 发送AUTH | 数据: {auth_response}")
                             await asyncio.sleep(DELAY_INTERVAL)
                             await websocket.send(json.dumps(auth_response))
-                            logger.success(f"UID: {truncate_userid(user_id)} | {node_type} | 已发送AUTH | 数据: {auth_response}")
+                            logger.success(f"UID: {truncate_userid(user_id)} | {truncate_proxy(protocol_proxy)} | {node_type} | 已发送AUTH | 数据: {auth_response}")
                             is_authenticated = True
 
                         elif message.get("action") in ["HTTP_REQUEST", "OPEN_TUNNEL"]:
@@ -243,14 +243,14 @@ async def connect_to_wss(protocol_proxy, user_id):
                                     logger.info(f"UID: {truncate_userid(user_id)} | {node_type} | 打开PING访问 | 数据: {http_response}")
                                     await asyncio.sleep(DELAY_INTERVAL)
                                     await websocket.send(json.dumps(http_response))
-                                    logger.success(f"UID: {truncate_userid(user_id)} | {node_type} | 已发送PING访问 | 数据: {http_response}")
+                                    logger.success(f"UID: {truncate_userid(user_id)} | {truncate_proxy(protocol_proxy)} | {node_type} | 已发送PING访问 | 数据: {http_response}")
 
                         elif message.get("action") == "PONG":
                             pong_response = {"id": message["id"], "origin_action": "PONG"}
                             logger.debug(f"UID: {truncate_userid(user_id)} | {node_type} | 发送PONG | 数据: {pong_response}")
                             await asyncio.sleep(DELAY_INTERVAL)
                             await websocket.send(json.dumps(pong_response))
-                            logger.success(f"UID: {truncate_userid(user_id)} | {node_type} | 已发送PONG | 数据: {pong_response}")
+                            logger.success(f"UID: {truncate_userid(user_id)} | {truncate_proxy(protocol_proxy)} | {node_type} | 已发送PONG | 数据: {pong_response}")
 
                 except websockets.exceptions.ConnectionClosedError as e:
                     logger.error(f"UID: {truncate_userid(user_id)} | {node_type} | 连接关闭错误 | 代理: {truncate_proxy(protocol_proxy)} | 错误: {str(e)} | 剩余代理数量: {total_proxies}")
