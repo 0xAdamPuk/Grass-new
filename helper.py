@@ -9,6 +9,10 @@ def run_script():
         pid = process.pid
         print(f"Started main2.py with PID: {pid}")
 
+        # 将 PID 保存到 pid.txt 文件中
+        with open("pid.txt", "w") as f:
+            f.write(str(pid))
+
         # 监控进程状态
         while True:
             try:
